@@ -1,13 +1,17 @@
 import zmq
 
-# https://zguide.zeromq.org/docs/chapter1/#Getting-the-Message-Out
+# https://dev.to/dansyuqri/pub-sub-with-pyzmq-part-1-2f63#multipart-messages
 context = zmq.Context()
 socket = context.socket(zmq.PUB)
 socket.bind("tcp://*:5556")
 
-def Publish(message):
-    socket.send_string(message)
+def Publish(channel, message):
+    socket.send_string(channel, flags=zmq.SNDMORE)
+    socket.send_json(message)
 
 
 while True:
-    Publish("Hello")
+    Publish("Hello", {"message": "World"})
+    Publish("Second", {"message": "Topic"})
+    
+socket.close()    
