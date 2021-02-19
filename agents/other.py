@@ -1,11 +1,14 @@
 from random import randrange
-import sys
-sys.path.append('./')
 from modules.request import Request
-from modules.subscribe import Subscribe
+from modules.subscribe import Subscribe, Listen
+
 
 ENERGY = 0
 WAIT = 5000
 
+messages = []
 Subscribe("agent0")
-Request({"energy": randrange(100)}, WAIT)
+while True:
+    Listen("agent0", messages)
+    if(len(messages) > 0):
+        Request({"energy": randrange(100)}, WAIT)

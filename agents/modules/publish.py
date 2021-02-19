@@ -6,6 +6,7 @@ socket = context.socket(zmq.PUB)
 socket.bind("tcp://*:5556")
 
 def Publish(channel, message):
+    print('publishing', message)
     socket.send_string(channel, flags=zmq.SNDMORE)
     socket.send_json(message)
 
