@@ -9,9 +9,9 @@ def Publish(channel, message):
     socket.send_string(channel, flags=zmq.SNDMORE)
     socket.send_json(message)
 
-
-while True:
-    Publish("Hello", {"message": "World"})
-    Publish("Second", {"message": "Topic"})
+# TEST
+# while True:
+#     Publish("Hello", {"message": "World"})
+#     Publish("Second", {"message": "Topic"})
     
-socket.close()    
+# socket.close()    
