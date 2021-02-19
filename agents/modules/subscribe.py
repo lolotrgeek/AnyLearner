@@ -4,7 +4,7 @@ import zmq
 context = zmq.Context()
 
 def Subscribe(channel, callback):
-    socket = createChannel(channel)
+    socket = Channel(5556, channel)
     print("Starting receiver loop ...")
     while True:
         try:
@@ -17,14 +17,25 @@ def Subscribe(channel, callback):
     socket.close()
     # context.term()
 
-def createChannel(channel):
+
+def Listen(channel, callback):
+    socket=channel[0]
+    topic=channel[1] 
+    topic = socket.recv_string()
+    message = socket.recv_json()
+    callback(topic, message)    
+    
+
+def Channel(port, topic, address="tcp://localhost:"):
     # https://dev.to/dansyuqri/pub-sub-with-pyzmq-part-1-2f63#multipart-messages
     socket = context.socket(zmq.SUB)
-    socket.connect("tcp://localhost:5556")
-    socket.subscribe(channel)
-    socket.setsockopt(zmq.LINGER, 0)
-    return socket
+    socket.connect(address+str(port))
+    socket.subscribe(topic)
+    socket.setsockopt(zmq.LINGER, 0)    
+    return socket, topic
 
+def End(channel):
+    channel[0].close()
 
 # TEST
 # Subscribe("Hello")

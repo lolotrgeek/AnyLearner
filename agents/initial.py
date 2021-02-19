@@ -1,22 +1,11 @@
 import time
 
-from modules.publish import Publish
+from modules.publish import Publish, Send, Channel, End
 from modules.reply import Reply
 
 ENERGY = 1000
 NAME = "AGENT0"
 
-# def Start():
-#     print('Publishing...')
-#     try:
-#         while True:
-#             # Reply(Response)
-#             Publish(NAME, {"energy": ENERGY})
-#             time.sleep(1)
-#     except:
-#         Done()
-
-# # TODO: move reply/publish into separate processes
 # # def Response(request):
 # #     if isinstance(request, object) & isinstance(request.get("energy"), int):
 # #         # print(request.get("energy"))
@@ -26,6 +15,18 @@ NAME = "AGENT0"
 # #         return {"energy": 0}
 
 
-# Start()
+# Publish(NAME, {"energy": ENERGY})
+channel = Channel(5553)
+channel1 = Channel(5554)
 
-Publish(NAME, {"energy": ENERGY})
+print('Sending...')
+
+try:
+    while True: 
+        Send(channel, NAME, {"energy": ENERGY})
+        Send(channel1, "TEST", {"test": 1})
+        time.sleep(1)
+except:
+    print('Closing...')
+    End(channel)
+    End(channel1)        

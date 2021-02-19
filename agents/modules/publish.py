@@ -5,22 +5,33 @@ import time
 
 def Publish(channel, message):
     # print('publishing', message)
-    ctx = zmq.Context()
-    sock = ctx.socket(zmq.PUB)
-    sock.bind("tcp://*:5556")
+    socket = Channel(5556)
 
     print("Starting loop...")
     i = 1
     while True:
-        sock.send_string(channel, flags=zmq.SNDMORE)
-        sock.send_json(message)
+        socket.send_string(channel, flags=zmq.SNDMORE)
+        socket.send_json(message)
         print("Sent string: %s ..." % message)
         i += 1
         time.sleep(1)
 
-    sock.close()
-    ctx.term()
+    End(socket)
+    # ctx.term()
 
+def Send(socket, channel, message):
+    socket.send_string(channel, flags=zmq.SNDMORE)
+    socket.send_json(message)
+    print("Sent string: %s %s ..." % (channel, message))
+
+def Channel(port):
+    ctx = zmq.Context()
+    socket = ctx.socket(zmq.PUB)
+    socket.bind("tcp://*:"+str(port))
+    return socket
+
+def End(socket):
+    socket.close()
 
 # TEST
 # while True:
