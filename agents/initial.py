@@ -1,6 +1,3 @@
-
-import sys
-import signal
 import time
 
 from modules.publish import Publish
@@ -8,12 +5,6 @@ from modules.reply import Reply
 
 ENERGY = 1000
 NAME = "AGENT0"
-
-
-def signal_handler(signal, frame):
-    print("\nprogram exiting gracefully")
-    sys.exit(0)
-
 
 def Start():
     print('Listening...')
