@@ -17,13 +17,12 @@ print('Listening...')
 # Subscribe(CHANNEL, say)
 
 channel = Channel(5553, TOPIC)
-channel1 = Channel(5554, "TEST")
+# channel1 = Channel(5554, "TEST")
 
 while True:
     Listen(channel, say)
-    Listen(channel1, say)
-    # if(len(messages) > 0):
-    #     Request({"energy": randrange(100)}, WAIT)
+    # Listen(channel1, say)
+    Request({"energy": randrange(100)}, WAIT)
 
 End(channel)
-End(channel1)
+# End(channel1)
