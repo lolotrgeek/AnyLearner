@@ -19,19 +19,21 @@ def Publish(channel, message):
     End(socket)
     # ctx.term()
 
-def Send(socket, channel, message):
+def Send(channel, message):
+    socket=channel[0]
+    topic=channel[1] 
     socket.send_string(channel, flags=zmq.SNDMORE)
     socket.send_json(message)
     print("Sent string: %s %s ..." % (channel, message))
 
-def Channel(port):
+def Create(port, topic):
     ctx = zmq.Context()
     socket = ctx.socket(zmq.PUB)
     socket.bind("tcp://*:"+str(port))
-    return socket
+    return socket, topic
 
-def End(socket):
-    socket.close()
+def End(channel):
+    channel[0].close()
 
 # TEST
 # while True:

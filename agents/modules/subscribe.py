@@ -1,6 +1,7 @@
 import sys
 import zmq
 
+
 context = zmq.Context()
 
 def Subscribe(channel, callback):
@@ -26,7 +27,7 @@ def Listen(channel, callback):
     callback(topic, message)    
     
 
-def Channel(port, topic, address="tcp://localhost:"):
+def Consume(port, topic, address="tcp://localhost:"):
     # https://dev.to/dansyuqri/pub-sub-with-pyzmq-part-1-2f63#multipart-messages
     socket = context.socket(zmq.SUB)
     socket.connect(address+str(port))
