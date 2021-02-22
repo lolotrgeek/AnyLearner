@@ -35,6 +35,22 @@ def Spawn(energy):
     agent = Agent(Address(), Distribute(energy), "survival", ["reproduce"])
     return agent
 
+def Populate(agents):
+    global ENERGY
+    try:
+        # spawn agents until all energy has moved to the agents
+        while ENERGY > 0:
+            print("Spawning...")
+            agent = Spawn(ENERGY)
+            # keep track of agents? 
+            agents.append(agent)
+            print(vars(agent)) 
+    except Exception as e:
+        if e:
+            print(e)
+        else:
+            print('Populated...')
+        
 def Conserve(energy):
     """
     Energy is never destroyed, only moved
@@ -45,18 +61,8 @@ def Conserve(energy):
 
 def Spin():
     global ENERGY
-    global AGENTS
     print('Spinning...')
     try:
-        # spawn agents until all energy has moved to the agents
-        while ENERGY > 0:
-            print("Spawning...")
-            agent = Spawn(ENERGY)
-            # keep track of agents? 
-            AGENTS.append(agent)
-
-            print(vars(agent))
-
         while True:
             # Send(CHANNEL, NAME, {"energy": ENERGY})
             Send(CHANNEL, NAME, "Hello!")
@@ -66,4 +72,7 @@ def Spin():
         print('Closing...')
         print(e)
         End(CHANNEL)
-Spin()
+
+if __name__ == "__main__":
+    # Populate(AGENTS)
+    Spin()

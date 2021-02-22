@@ -8,7 +8,7 @@ class Agent:
         self.address = address
         self.life = life
         self.actions = actions
-        self.survival = "" #TODO: type of survival function...
+        self.survival = survival #TODO: type of survival function...
         self.reality = None
         self.reproductions = []
         self.past_life = []
