@@ -6,6 +6,7 @@ from random import randrange, randint
 from modules.publish import Send, Channel, End
 from modules.subscribe import Listen, Connect
 from functions.survival import Survival
+from agent import Agent
 
 ENERGY = 1000
 NAME = "REALITY"
@@ -30,12 +31,7 @@ def Spawn(energy):
     """
     Convert energy into agent using random params
     """
-    agent = {
-        "address": Address(),
-        "life": Distribute(energy),
-        "survival" : Survival,
-        "actions" : ["reproduce"]
-    }
+    agent = Agent(Address(), Distribute(energy), Survival, ["reproduce"])
     return agent
 
 def Conserve(energy):
@@ -46,11 +42,6 @@ def Conserve(energy):
     ENERGY = ENERGY - energy
     return ENERGY
 
-def listener(topic, message):
-    """
-    Callback to handle subscribed data
-    """
-    print("Heard :", message)
 
 def Spin():
     global ENERGY
@@ -63,17 +54,16 @@ def Spin():
             agent = Spawn(ENERGY)
             # keep track of agents? 
             AGENTS.append(agent)
-            print(agent)           
-        try:
-            while True:
-                # Send(CHANNEL, NAME, {"energy": ENERGY})
-                Send(CHANNEL, NAME, "Hello!")
-                time.sleep(1)
-        except Exception as e:
-            print('Unable To listen...')
-            print(e)
-            End(CHANNEL)                
+            # load each agent into a separate process
+            print(vars(agent))
+    
+        while True:
+            # Send(CHANNEL, NAME, {"energy": ENERGY})
+            Send(CHANNEL, NAME, "Hello!")
+            time.sleep(1)
+
     except Exception as e:
         print('Closing...')
         print(e)
+        End(CHANNEL)
 Spin()

@@ -20,5 +20,4 @@ Topics can have multiple messages.
 
 
 ## TODO:
-- pub/sub: non-blocking individual channels?
 - pub/sub: [implement udp?](https://zguide.zeromq.org/docs/chapter8/#Cooperative-Discovery-Using-UDP-Broadcasts)
