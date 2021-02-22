@@ -1,13 +1,12 @@
 from random import randrange
-from modules.request import Request
-from modules.subscribe import Subscribe, Listen, ConsumeChannel, End
+from modules.subscribe import Subscribe, Listen, Connect, End
 
 
 ENERGY = 0
 WAIT = 5000
-TOPIC = "AGENT0"
+TOPIC = "REALITY"
 
-channel = ConsumeChannel(5553, TOPIC)
+channel = Connect(5556, TOPIC)
 messages = []
 
 # get initial state
@@ -21,7 +20,6 @@ def say(topic, message):
 print('Listening...') 
 while True:
     Listen(channel, say)
-    Request({}, WAIT)
-
+    
 
 End(channel)

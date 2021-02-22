@@ -3,14 +3,14 @@ import time
 
 # https://dev.to/dansyuqri/pub-sub-with-pyzmq-part-1-2f63#multipart-messages
 
-def Publish(channel, message):
+def Publish(topic, message):
     # print('publishing', message)
-    socket = Channel(5556)
+    socket = Channel(5556, topic)[0]
 
     print("Starting loop...")
     i = 1
     while True:
-        socket.send_string(channel, flags=zmq.SNDMORE)
+        socket.send_string(topic, flags=zmq.SNDMORE)
         socket.send_json(message)
         print("Sent string: %s ..." % message)
         i += 1
@@ -19,14 +19,14 @@ def Publish(channel, message):
     End(socket)
     # ctx.term()
 
-def Send(channel, message):
+def Send(channel, topic, message):
     socket=channel[0]
     topic=channel[1] 
-    socket.send_string(channel, flags=zmq.SNDMORE)
+    socket.send_string(topic, flags=zmq.SNDMORE)
     socket.send_json(message)
     print("Sent string: %s %s ..." % (channel, message))
 
-def Create(port, topic):
+def Channel(port, topic):
     ctx = zmq.Context()
     socket = ctx.socket(zmq.PUB)
     socket.bind("tcp://*:"+str(port))
