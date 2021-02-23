@@ -21,11 +21,13 @@ def Subscribe(topic, callback):
 
 def Listen(channel, callback):
     socket=channel[0]
-    topic=channel[1] 
-    topic = socket.recv_string()
-    message = socket.recv_json()
-    callback(topic, message)    
-    
+    try:
+        topic = socket.recv_string(flags=zmq.NOBLOCK)
+        message = socket.recv_json(flags=zmq.NOBLOCK)
+        callback(topic, message)
+    except zmq.Again as e:
+        # print("No message received yet")
+        pass
 
 def Connect(port, topic, address="tcp://localhost:"):
     # https://dev.to/dansyuqri/pub-sub-with-pyzmq-part-1-2f63#multipart-messages
