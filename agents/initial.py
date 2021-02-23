@@ -10,9 +10,6 @@ from modules.subscribe import Listen, Connect
 from agent import Agent
 
 ENERGY = 1000
-NAME = "REALITY"
-CHANNEL = Channel(5556, NAME)
-AGENTS = []
 
 def Distribute(energy):
     """
@@ -61,7 +58,10 @@ def Conserve(energy):
 
 def Spin():
     global ENERGY
-    print('Spinning...')
+    NAME = "REALITY"
+    CHANNEL = Channel(5556, NAME)
+    AGENTS = []
+    print(NAME, 'Spinning...')
     try:
         while True:
             # Send(CHANNEL, NAME, {"energy": ENERGY})

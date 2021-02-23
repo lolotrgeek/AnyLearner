@@ -1,14 +1,11 @@
-
+# Populate Environment by spawning agents into sub-processes
 import subprocess
 import os
+import sys
 from multiprocessing import Process, Pool
 import initial
 
-
-AGENTS = []
-PROCESSES = []
-
-initial.Populate(AGENTS)
+#TODO: wrapper to check PID's for each spawned process
 
 # subprocess.run('python Agents/initial.py')
 # # load each Agent into a sub process
@@ -17,11 +14,24 @@ initial.Populate(AGENTS)
 #     subprocess.run(cmd)
 
 if __name__ == '__main__':
-    PROCESSES.append(Process(target=initial))
-
-    for Agent in AGENTS:
-        PROCESSES.append(Process(target=Agent))
+    ENVID = os.getpid()
+    AGENTS = []
+    processes = []
+    try:
+        initial.Populate(AGENTS)
+    except Exception as e:
+        print(e)
+        sys.exit()
     
-    for p in PROCESSES:
-        print(p)
-        p.start()
+    try:
+        processes.append(Process(target=initial.Spin, args=()))
+
+        for Agent in AGENTS:
+            processes.append(Process(target=Agent.Spin, args=()))
+        
+        for p in processes:
+            print(p)
+            p.start()
+    except Exception as e:
+        print(e)
+        sys.exit()

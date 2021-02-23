@@ -5,6 +5,7 @@ from functions.survival import Survival
 
 class Agent:
     def __init__(self, address, life, survival, actions):
+        self.name = "agent"
         self.address = address
         self.life = life
         self.actions = actions
@@ -20,11 +21,11 @@ class Agent:
         """
         Callback to handle subscribed data
         """
-        print("Heard :", message)
+        print("Heard :", self.address, message)
 
     def Spin(self):
         self.reality = Connect(5556, "REALITY")
-        print("Spinning...")
+        print("Agent Spinning...")
         while True:
             Listen(self.reality, self.Hear)
 
