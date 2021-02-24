@@ -19,5 +19,9 @@ A Channel can have multiple topics.
 Topics can have multiple messages.
 
 
+## Environment
+### Spawning
+Loads each agent into a sub-process.
+
 ## TODO:
 - pub/sub: [implement udp?](https://zguide.zeromq.org/docs/chapter8/#Cooperative-Discovery-Using-UDP-Broadcasts)
