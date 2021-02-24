@@ -21,16 +21,16 @@ def Publish(topic, message):
 
 def Send(channel, topic, message):
     socket=channel[0]
-    topic=channel[1] 
+    name=channel[1] 
     socket.send_string(topic, flags=zmq.SNDMORE)
     socket.send_json(message)
-    print("Sent string: %s %s ..." % (channel, message))
+    print("Sent string: %s %s ..." % (topic, message))
 
-def Channel(port, topic):
+def Channel(port, name):
     ctx = zmq.Context()
     socket = ctx.socket(zmq.PUB)
     socket.bind("tcp://*:"+str(port))
-    return socket, topic
+    return socket, name
 
 def End(channel):
     channel[0].close()

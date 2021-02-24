@@ -5,7 +5,7 @@ import sys
 from multiprocessing import Process, Pool
 import initial
 
-#TODO: wrapper to check PID's for each spawned process
+#TODO: agents dying can be done with wrapper to check PID's for each spawned process, when agent energy = 0 kill PID
 
 # subprocess.run('python Agents/initial.py')
 # # load each Agent into a sub process
@@ -17,6 +17,7 @@ if __name__ == '__main__':
     ENVID = os.getpid()
     AGENTS = []
     processes = []
+
     try:
         initial.Populate(AGENTS)
     except Exception as e:
@@ -24,7 +25,7 @@ if __name__ == '__main__':
         sys.exit()
     
     try:
-        processes.append(Process(target=initial.Spin, args=()))
+        processes.append(Process(target=initial.Spin, args=(AGENTS, )))
 
         for Agent in AGENTS:
             processes.append(Process(target=Agent.Spin, args=()))

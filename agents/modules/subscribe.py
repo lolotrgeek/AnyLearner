@@ -29,13 +29,13 @@ def Listen(channel, callback):
         # print("No message received yet")
         pass
 
-def Connect(port, topic, address="tcp://localhost:"):
+def Connect(port, name, address="tcp://localhost:"):
     # https://dev.to/dansyuqri/pub-sub-with-pyzmq-part-1-2f63#multipart-messages
     socket = context.socket(zmq.SUB)
     socket.connect(address+str(port))
-    socket.subscribe(topic)
+    socket.subscribe(name)
     socket.setsockopt(zmq.LINGER, 0)    
-    return socket, topic
+    return socket, name
 
 def End(channel):
     channel[0].close()

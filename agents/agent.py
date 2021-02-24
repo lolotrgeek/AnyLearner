@@ -1,18 +1,21 @@
 import argparse
+import time
 from modules.subscribe import Subscribe, Listen, Connect, End
+from modules.publish import Send, Channel, End
 from functions.survival import Survival
 
 
 class Agent:
-    def __init__(self, address, life, survival, actions):
-        self.name = "agent"
+    def __init__(self, name, address, life, survival, actions):
+        self.name = name
         self.address = address
         self.life = life
         self.actions = actions
         self.survival = survival #TODO: type of survival function...
-        self.reality = None
         self.reproductions = []
         self.past_life = []
+        self.reality = None
+        self.channel = None
 
     def Survival(self):
         Survival(self.life, self.past_life, self.reproductions)
@@ -25,12 +28,16 @@ class Agent:
 
     def Spin(self):
         self.reality = Connect(5556, "REALITY")
+        self.channel = Channel(self.address[1], self.name)
         print("Agent Spinning...")
         while True:
             Listen(self.reality, self.Hear)
+            Send(self.channel, "energy", self.life)
+            time.sleep(1)
 
     def Sleep(self):
         End(self.reality)
+        End(self.channel)
 
 # Run an agent with command line args.
 if __name__ == "__main__":
