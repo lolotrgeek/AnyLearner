@@ -1,5 +1,6 @@
 import argparse
 import time
+import os
 from modules.subscribe import Subscribe, Listen, Connect, End
 from modules.publish import Send, Channel, End
 from functions.survival import Survival
@@ -16,6 +17,7 @@ class Agent:
         self.past_life = []
         self.reality = None
         self.channel = None
+        self.pid = os.getpid()
 
     def Survival(self):
         Survival(self.life, self.past_life, self.reproductions)
@@ -29,6 +31,7 @@ class Agent:
     def Spin(self):
         self.reality = Connect(5556, "REALITY")
         self.channel = Channel(self.address[1], self.name)
+        self.pid = os.getpid()
         print("Agent Spinning...")
         while True:
             Listen(self.reality, self.Hear)
