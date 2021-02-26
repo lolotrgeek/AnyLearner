@@ -1,10 +1,7 @@
-import argparse
-import time
-import os
+import os, signal, time, argparse, logging
 from modules.subscribe import Subscribe, Listen, Connect, End
 from modules.publish import Send, Channel, End
 from functions.survival import Survival
-
 
 class Agent:
     def __init__(self, name, address, life, survival, actions):
@@ -18,6 +15,9 @@ class Agent:
         self.reality = None
         self.channel = None
         self.pid = os.getpid()
+        
+    def log(self, message):
+        logging.debug("%s - %s", self.name, message)
 
     def Survival(self):
         Survival(self.life, self.past_life, self.reproductions)
@@ -26,16 +26,29 @@ class Agent:
         """
         Callback to handle subscribed data
         """
-        print("Heard :", self.address, message)
+        heard = "Heard : %s %s", self.address, message
+        self.log(heard)
+
+    def Die(self):
+        os.kill(pid, signal.SIGTERM)
+
+    def Live(self):
+        """
+        Living is the act of dying.
+        """
+        if self.life == 0:
+            self.Die()
+        else:
+            Listen(self.reality, self.Hear)
+            Send(self.channel, "energy", self.life)            
 
     def Spin(self):
         self.reality = Connect(5556, "REALITY")
         self.channel = Channel(self.address[1], self.name)
         self.pid = os.getpid()
-        print("Agent Spinning...")
+        print(f"Agent {self.address} Spinning...")
         while True:
-            Listen(self.reality, self.Hear)
-            Send(self.channel, "energy", self.life)
+            self.Live()
             time.sleep(1)
 
     def Sleep(self):
