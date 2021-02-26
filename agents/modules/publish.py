@@ -12,7 +12,7 @@ def Publish(topic, message):
     while True:
         socket.send_string(topic, flags=zmq.SNDMORE)
         socket.send_json(message)
-        print("Sent string: %s ..." % message)
+        # print("Sent string: %s ..." % message)
         i += 1
         time.sleep(1)
 
@@ -24,7 +24,7 @@ def Send(channel, topic, message):
     name=channel[1] 
     socket.send_string(topic, flags=zmq.SNDMORE)
     socket.send_json(message)
-    print("Sent string: %s %s ..." % (topic, message))
+    # print("Sent string: %s %s ..." % (topic, message))
 
 def Channel(port, name):
     ctx = zmq.Context()
