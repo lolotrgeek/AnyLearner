@@ -40,7 +40,7 @@ def Connect(port, name, address="tcp://localhost:"):
 def End(channel):
     channel[0].close()
 
-# TEST
+
 def Test():
     CHANNEL = Connect(5556, "TEST")
     def Say(topic, message):
