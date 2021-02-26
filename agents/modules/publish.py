@@ -35,9 +35,15 @@ def Channel(port, name):
 def End(channel):
     channel[0].close()
 
-# TEST
-# while True:
-#     Publish("Hello", {"message": "World"})
-#     Publish("Second", {"message": "Topic"})
-    
-# socket.close()    
+
+def Test():
+    CHANNEL = Channel(5556, "TEST")
+    try:
+        while True:
+            Send(CHANNEL, "TEST", "Hello!")
+            time.sleep(1)
+    except:
+        End(CHANNEL)
+
+if __name__ == "__main__":
+    Test()

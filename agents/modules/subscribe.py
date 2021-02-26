@@ -34,13 +34,23 @@ def Connect(port, name, address="tcp://localhost:"):
     socket = context.socket(zmq.SUB)
     socket.connect(address+str(port))
     socket.subscribe(name)
-    socket.setsockopt(zmq.LINGER, 0)    
+    socket.setsockopt(zmq.LINGER, 0)
     return socket, name
 
 def End(channel):
     channel[0].close()
 
 # TEST
-# Subscribe("Hello")
-# Subscribe("Second")
-# Unsubscribe("Hello")
+def Test():
+    CHANNEL = Connect(5556, "TEST")
+    def Say(topic, message):
+        print(topic)
+        print(message)
+
+    try :
+        while True:
+            Listen(CHANNEL, Say)
+    except:
+        End(CHANNEL)
+if __name__ == "__main__":
+    Test()
