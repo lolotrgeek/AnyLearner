@@ -1,8 +1,7 @@
 # Acts as a Proxy for Reality
 # Starts Network by setting initial conditions and spawning agents
-# continues to run to spawn new agents
-import time
-import uuid
+# continues to run to conserve energy and spawn new agents
+import time, uuid, logging
 from random import randrange, randint, choice
 from modules.publish import Send, Channel, End
 from modules.subscribe import Listen, Connect
@@ -10,7 +9,9 @@ from modules.subscribe import Listen, Connect
 from agent import Agent
 
 ENERGY = 1000
+ENERGIES = []
 ADDRESSES = []
+
 
 def Distribute(energy):
     """
@@ -77,11 +78,24 @@ def Conserve(energy):
     ENERGY = ENERGY - energy
     return ENERGY
 
+def Transact(energies):
+    energy = sum(energies)
+    total = ENERGY - energy
+    if total > 0:
+        logging.warn("Energy was Created!? %s",total)
+    elif total < 0:
+        logging.warn("Energy is left over: %s", total)
+    else:
+        logging.debug("Energy is balanced: %s", total)
+
 def Hear(topic, message):
     """
     Callback to handle subscribed data
     """
-    print("Heard :", topic, message)
+    global ENERGIES
+    logging.debug("Heard : %s, %s", topic, message)
+    if topic == "energy":
+        ENERGIES.append(message)
 
 def Spin(agents):
     global ENERGY
@@ -100,7 +114,9 @@ def Spin(agents):
             Send(CHANNEL, NAME, "Hello!")
             for channel in channels:
                 Listen(channel, Hear)
-            
+
+            Transact(ENERGIES)
+            ENERGIES[:] = []
             time.sleep(1)
 
     except Exception as e:
