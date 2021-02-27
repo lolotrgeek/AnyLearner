@@ -1,4 +1,4 @@
-import os, signal, time, argparse, logging
+import os, signal, time, argparse, logging, uuid
 from modules.subscribe import Subscribe, Listen, Connect, End
 from modules.publish import Send, Channel, End
 from functions.survival import Survival
@@ -65,9 +65,8 @@ if __name__ == "__main__":
     parser.add_argument('--actions', help='List, possible actions')
 
     args = vars(parser.parse_args())
-    # for arg in args:
-    #     print(type(arg), arg)
     
+    name = "agent_"+uuid.uuid4().hex
     address = args.get("address")
     life = int(args.get("life"))
     survival = args.get("survival")
@@ -78,7 +77,7 @@ if __name__ == "__main__":
     print("survival ", type(survival), survival)
     print("actions " , type(actions), actions)
 
-    agent = Agent(address, life, survival, actions)
+    agent = Agent(name, address, life, survival, actions)
 
     try:
         agent.Spin()
