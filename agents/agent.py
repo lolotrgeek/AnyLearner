@@ -26,6 +26,7 @@ class Agent:
         """
         Callback to handle subscribed data
         """
+        #TODO: if haven't heard from REALITY in x time => Die()
         heard = "Heard : %s %s", self.address, message
         self.log(heard)
 
@@ -40,7 +41,7 @@ class Agent:
             self.Die()
         else:
             Listen(self.reality, self.Hear)
-            Send(self.channel, "energy", self.life)            
+            Send(self.channel, self.name, self.life)            
 
     def Spin(self):
         self.reality = Connect(5556, "REALITY")
