@@ -4,7 +4,7 @@ from modules.publish import Send, Channel, End
 from functions.survival import Survival
 
 class Agent:
-    def __init__(self, name, address, life, survival, actions):
+    def __init__(self, name, address, life, survival, actions, pid=os.getpid):
         self.name = name
         self.address = address
         self.life = life
@@ -14,7 +14,7 @@ class Agent:
         self.past_life = []
         self.reality = None
         self.channel = None
-        self.pid = os.getpid()
+        self.pid = pid
         
     def log(self, message):
         logging.debug("%s - %s", self.name, message)
