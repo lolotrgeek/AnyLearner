@@ -6,8 +6,6 @@ import initial
 
 logging.basicConfig(filename='environment.log', format='%(levelname)s %(asctime)s %(message)s', level=logging.DEBUG)
 
-#TODO: agents dying can be done with wrapper to check PID's for each spawned process, when agent energy = 0 kill PID
-
 def Populate(agents):
     try:
         initial.Populate(agents)
@@ -17,7 +15,7 @@ def Populate(agents):
 
 def Spin(agents, processes):
     try:
-        processes.append(Process(target=initial.Spin, args=(agents, )))
+        processes.append(Process(target=initial.Step, args=(agents, )))
 
         for Agent in agents:
             processes.append(Process(target=Agent.Spin, args=()))
