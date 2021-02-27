@@ -1,7 +1,6 @@
 # Tests looping process spawning implementations
 from multiprocessing import Process
-import os
-import time
+import os, time
 
 def info(title):
     print('module name:', title, 'parent process:', os.getppid(), 'process id:', os.getpid())
