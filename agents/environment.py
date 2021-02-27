@@ -4,7 +4,7 @@ import psutil
 from multiprocessing import Process, Pool
 import initial
 
-logging.basicConfig(filename='environment.log', format='%(levelname)s %(asctime)s %(message)s', level=logging.DEBUG) 
+logging.basicConfig(filename='environment.log', format='%(levelname)s %(asctime)s %(message)s', level=logging.DEBUG)
 
 #TODO: agents dying can be done with wrapper to check PID's for each spawned process, when agent energy = 0 kill PID
 
@@ -27,7 +27,7 @@ def Spin(agents, processes):
             p.start()
             print('pid:', p.pid)
     except Exception as e:
-        logging.warning(e)
+        logging.error(e)
         sys.exit()    
 
 def Alive(agents):
