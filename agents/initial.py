@@ -14,11 +14,8 @@ from functions.runonce import run_once
 
 logging.basicConfig(filename='environment.log', format='%(levelname)s %(asctime)s %(message)s', level=logging.DEBUG)
 
-
-# TODO: reformalize as a class?
-
+# TODO: refactor as a class?
 NAME = "REALITY"
-
 ENERGY = 1000 # energy held by environment
 TOTAL = ENERGY # a constant value set by initial ENERGY
 PORTS = []
@@ -117,7 +114,6 @@ def Balance():
         life = sum(LIFE)
         ENERGY = TOTAL - life
         print(f"ENERGY: {ENERGY} / LIFE: {life}") 
-
 
 def Budget():
     global ENERGY
@@ -219,12 +215,8 @@ def Spin():
         print(exc_type, fname, exc_tb.tb_lineno)
         End(CHANNEL)
         sys.exit()
-
-
-    
+   
 if __name__ == "__main__":
     ENVID = os.getpid()
     Populate()
     Spin()
-
-
