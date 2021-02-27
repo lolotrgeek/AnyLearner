@@ -2,3 +2,4 @@
 .vscode
 *.log
 __pycache__
+agents/modules/workspace.code-workspace
