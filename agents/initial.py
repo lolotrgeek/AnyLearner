@@ -16,6 +16,7 @@ logging.basicConfig(filename='environment.log', format='%(levelname)s %(asctime)
 
 # TODO: refactor as a class?
 NAME = "REALITY"
+CHANNEL = Channel(5556, NAME)
 ENERGY = 1000 # energy held by environment
 TOTAL = ENERGY # a constant value set by initial ENERGY
 PORTS = []
@@ -126,20 +127,36 @@ def Budget():
     else:
         logging.debug("Energy balanced: %s", ENERGY)
 
+def Rebroadcast(message):
+    """
+    Messages from agents should be sent through to anyone else listening
+
+    https://drive.google.com/file/d/17DeqRamaphxTv-5xOE0xEPynJDXNzf3L/view?usp=sharing
+
+    """
+    global CHANNEL
+    global NAME
+    Send(CHANNEL, NAME, message)
+
 def Hear(topic, message):
     """
-    Callback to handle subscribed data
+    Callback to handle incoming (subscribed) messages
     """
     global HEARD
     global CHANNELS
     logging.debug("Heard : %s, %s", topic, message)
     if topic.find("agent") != -1:
+        # heard an agent 
         HEARD.append(topic)
+    else:
+        # heard a message from agent...
+        Rebroadcast(message)
 
 def Remove(item, List):
     """
     Remove an item from a list.
     """
+    #TODO: move to functions
     for index, found in enumerate(List):
         if found == item:
             print("removing:", index, found)
@@ -178,7 +195,7 @@ def Spin():
     global ENERGY
     global AGENTS
     global HEARD
-    CHANNEL = Channel(5556, NAME)
+    
     timeout = 5
     original = len(AGENTS)
 
@@ -187,8 +204,6 @@ def Spin():
     try:
         run_count = 0
         while True:
-            Send(CHANNEL, NAME, "Hello!")
-
             for channel in CHANNELS:
                 Listen(channel, Hear)
                 if timeout < run_count:

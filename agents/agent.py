@@ -6,6 +6,7 @@ from functions.survival import Survival
 class Agent:
     def __init__(self, name, address, life, survival, actions, pid=os.getpid):
         self.name = name
+        
         self.address = address
         self.life = life
         self.actions = actions
@@ -14,6 +15,7 @@ class Agent:
         self.past_life = []
         self.reality = None
         self.channel = None
+        self.topics = []
         self.pid = pid
         
     def log(self, message):
@@ -22,6 +24,12 @@ class Agent:
     def Survival(self):
         Survival(self.life, self.past_life, self.reproductions)
 
+    def Focus(self, topic):
+        if topic in topics:
+            return True
+        else :
+            return False
+
     def Hear(self, topic, message):
         """
         Callback to handle subscribed data
@@ -29,6 +37,8 @@ class Agent:
         #TODO: if haven't heard from REALITY in x time => Die()
         heard = "Heard : %s %s", self.address, message
         self.log(heard)
+        if Focus(topic) is True:
+            print('Focused', topic, message)
 
     def Die(self):
         os.kill(pid, signal.SIGTERM)
@@ -42,6 +52,12 @@ class Agent:
         else:
             Listen(self.reality, self.Hear)
             Send(self.channel, self.name, self.life)
+
+    def Talk(self, topic, message):
+        """
+        Talk to other agent(s)
+        """
+        Send(self.channel, topic, message)
 
     def Spin(self):
         self.reality = Connect(5556, "REALITY")
