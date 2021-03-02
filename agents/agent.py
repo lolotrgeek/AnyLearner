@@ -41,7 +41,7 @@ class Agent:
             self.Die()
         else:
             Listen(self.reality, self.Hear)
-            Send(self.channel, self.name, self.life)            
+            Send(self.channel, self.name, self.life)
 
     def Spin(self):
         self.reality = Connect(5556, "REALITY")
