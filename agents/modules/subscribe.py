@@ -20,6 +20,11 @@ def Subscribe(topic, callback):
 
 
 def Listen(channel, callback):
+    """
+    channel - tuple : (socket, name)
+
+    callback - function 
+    """    
     socket=channel[0]
     try:
         topic = socket.recv_string(flags=zmq.NOBLOCK)

@@ -20,6 +20,13 @@ def Publish(topic, message):
     # ctx.term()
 
 def Send(channel, topic, message):
+    """
+    channel - tuple : (socket, name)
+    
+    topic - string 
+
+    message - json | string
+    """
     socket=channel[0]
     name=channel[1] 
     socket.send_string(topic, flags=zmq.SNDMORE)
